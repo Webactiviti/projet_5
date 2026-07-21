@@ -25,7 +25,7 @@ Avant de commencer, assure-toi d'avoir installé sur ta machine :
 
 ### 1. Cloner le dépôt
 ```bash
-git clone [https://github.com/webactiviti/projet_5.git](https://github.com/votre-nom-utilisateur/projet_5.git)
+git clone [https://github.com/webactiviti/projet_5.git](https://github.com/Webactiviti/projet_5.git)
 cd projet_5
 ```
 
