@@ -1,0 +1,23 @@
+services:
+  # 1. Le serveur de base de données
+  mongodb:
+    image: mongo:latest
+    container_name: projet5
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: SuperMotDePasseAdmin123!
+    volumes:
+      - mongo-data:/data/db
+
+  # 2. Le script de migration autonome
+  migration:
+    build: .
+    container_name: script_migration
+    depends_on:
+      - mongodb
+    restart: "no" # S'exécute une fois et s'arrête une fois fini
+
+volumes:
+  mongo-data:
