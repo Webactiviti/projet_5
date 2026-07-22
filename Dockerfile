@@ -14,7 +14,7 @@ RUN uv pip install --system -r pyproject.toml
 # Copie des scripts et du jeu de données
 COPY migrate.py .
 COPY healthcare_dataset.csv .
-COPY test_auth.csv .
+COPY test_auth.py .
 
 # Commande de lancement
 CMD ["python", "migrate.py"]
