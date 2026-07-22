@@ -7,7 +7,8 @@ def tester_connexion_applicative():
     
     # URL de connexion avec les identifiants restreints :
     # mongodb://<username>:<password>@<host>:<port>/<database>
-    uri_applicative = "mongodb://app_user:UserSecurePass123!@localhost:27017/healthcare_db"
+    
+    uri_applicative = "mongodb://app_user:UserSecurePass123!@mongodb:27017/healthcare_db"
     
     try:
         # Connexion ciblée sur 'healthcare_db'
