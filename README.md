@@ -82,48 +82,46 @@ Ce script vérifie :
 sudo docker compose run --rm migration python test_indexes.py 
 ```
 
-🚀 Début du benchmark et du test d'indexation... 
+   -🚀 Début du benchmark et du test d'indexation... 
+   -🧹 Tous les index secondaires ont été supprimés pour le test AVANT.
+   -📊 Nombre de documents dans la collection : 55500
 
-🧹 Tous les index secondaires ont été supprimés pour le test AVANT.
+1. Index Simple (AVANT) ---
 
-📊 Nombre de documents dans la collection : 55500
+- ⏱️ Temps d'exécution      : 27 ms
+- 📄 Documents examinés    : 55500
+- ✅ Documents retournés    : 9227
+- 🔍 Type de scan utilisé   : COLLSCAN
 
---- 1. Index Simple (AVANT) ---
+   Index Simple (APRÈS) ---
+- ⏱️ Temps d'exécution      : 11 ms
+- 📄 Documents examinés    : 9227
+- ✅ Documents retournés    : 9227
+- 🔍 Type de scan utilisé   : FETCH
 
-⏱️ Temps d'exécution      : 27 ms
-📄 Documents examinés    : 55500
-✅ Documents retournés    : 9227
-🔍 Type de scan utilisé   : COLLSCAN
+2.  Index Composé (AVANT) ---
+- ⏱️ Temps d'exécution      : 13 ms
+- 📄 Documents examinés    : 9304
+- ✅ Documents retournés    : 0
+- 🔍 Type de scan utilisé   : FETCH
 
---- 1. Index Simple (APRÈS) ---
-⏱️ Temps d'exécution      : 11 ms
-📄 Documents examinés    : 9227
-✅ Documents retournés    : 9227
-🔍 Type de scan utilisé   : FETCH
+  Index Composé (APRÈS) ---
+- ⏱️ Temps d'exécution      : 0 ms
+- 📄 Documents examinés    : 0
+- ✅ Documents retournés    : 0
+- 🔍 Type de scan utilisé   : FETCH
 
---- 2. Index Composé (AVANT) ---
-⏱️ Temps d'exécution      : 13 ms
-📄 Documents examinés    : 9304
-✅ Documents retournés    : 0
-🔍 Type de scan utilisé   : FETCH
+3. Index recherche de nom (AVANT) ---
+- ⏱️ Temps d'exécution      : 24 ms
+- 📄 Documents examinés    : 55500
+- ✅ Documents retournés    : 1
+- 🔍 Type de scan utilisé   : COLLSCAN
 
---- 2. Index Composé (APRÈS) ---
-⏱️ Temps d'exécution      : 0 ms
-📄 Documents examinés    : 0
-✅ Documents retournés    : 0
-🔍 Type de scan utilisé   : FETCH
-
---- 3. Index recherche de nom (AVANT) ---
-⏱️ Temps d'exécution      : 24 ms
-📄 Documents examinés    : 55500
-✅ Documents retournés    : 1
-🔍 Type de scan utilisé   : COLLSCAN
-
---- 3. Index recherche de nom (APRÈS) ---
-⏱️ Temps d'exécution      : 0 ms
-📄 Documents examinés    : 1
-✅ Documents retournés    : 1
-🔍 Type de scan utilisé   : FETCH
+  Index recherche de nom (APRÈS) ---
+- ⏱️ Temps d'exécution      : 0 ms
+- 📄 Documents examinés    : 1
+- ✅ Documents retournés    : 1
+- 🔍 Type de scan utilisé   : FETCH
 
 🔌 Connexion fermée.
 
