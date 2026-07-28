@@ -1,19 +1,31 @@
+import time
 import pandas as pd
 from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure, OperationFailure
+from pymongo.errors import ConnectionFailure, PyMongoError , OperationFailure
+import os
+from dotenv import load_dotenv
 
 def tester_connexion_applicative():
     print("🔑 Tentative de connexion avec l'utilisateur applicatif 'app_user'...")
+    # Charge les variables depuis le fichier .env s'il existe
+    load_dotenv()
+
+    # Récupération des variables d'environnement
+    MONGO_HOST = os.getenv("MONGO_HOST", "mongodb")
+    MONGO_PORT = os.getenv("MONGO_PORT", "27017")
+    DB_NAME = os.getenv("MONGO_DB_NAME", "healthcare_db")
+
+    APP_USER = os.getenv("APP_USER_USERNAME", "app_user")
+    APP_PASS = os.getenv("APP_USER_PASSWORD", "userpass")
     
-    # URL de connexion avec les identifiants restreints :
-    # mongodb://<username>:<password>@<host>:<port>/<database>
+
     
-    uri_applicative = "mongodb://app_user:UserSecurePass123!@mongodb:27017/healthcare_db"
-    
+    # URI applicative
+    uri_applicative = f"mongodb://{APP_USER}:{APP_PASS}@{MONGO_HOST}:{MONGO_PORT}/{DB_NAME}?authSource={DB_NAME}"
     try:
         # Connexion ciblée sur 'healthcare_db'
         client = MongoClient(uri_applicative, serverSelectionTimeoutMS=2000)
-        db = client['healthcare_db']
+        db = client[DB_NAME]
         collection = db['patients']
         
         # 1. On teste la lecture (récupérer 3 patients)

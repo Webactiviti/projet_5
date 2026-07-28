@@ -6,17 +6,20 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: SuperMotDePasseAdmin123!
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - mongo-data:/data/db
 
   # 2. Le script de migration autonome
+
   migration:
     build: .
     container_name: script_migration
     depends_on:
       - mongodb
+    env_file:
+      - .env
     restart: "no" # S'exécute une fois et s'arrête une fois fini
 
 volumes:

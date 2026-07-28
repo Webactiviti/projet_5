@@ -1,18 +1,38 @@
 import time
 import pandas as pd
 from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure, PyMongoError
+from pymongo.errors import ConnectionFailure, PyMongoError , OperationFailure
+import os
+from dotenv import load_dotenv
 
 def lancer_migration():
     client = None
+
+    # Charge les variables depuis le fichier .env s'il existe
+    load_dotenv()
+
+    # Récupération des variables d'environnement
+    MONGO_HOST = os.getenv("MONGO_HOST", "mongodb")
+    MONGO_PORT = os.getenv("MONGO_PORT", "27017")
+    DB_NAME = os.getenv("MONGO_DB_NAME", "healthcare_db")
+
+    # On conserve quote_plus uniquement pour la chaîne URI si besoin
+    ADMIN_USER_URI = os.getenv("MONGO_INITDB_ROOT_USERNAME", "admin")
+    ADMIN_PASS_URI = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "adminpass")
+    
+
+    APP_USER = os.getenv("APP_USER_USERNAME", "app_user")
+    APP_PASS = os.getenv("APP_USER_PASSWORD", "userpass")
+
     # Boucle de retentative pour attendre que MongoDB soit 100% prêt
     max_retries = 10
     print("⏳ Attente du démarrage de MongoDB...")
     
     for i in range(max_retries):
         try:
-            # Note : On utilise 'mongodb' au lieu de 'localhost' dans Docker
-            client = MongoClient('mongodb://admin:SuperMotDePasseAdmin123!@mongodb:27017/', serverSelectionTimeoutMS=2000)
+            # URI Administrateur
+            uri_admin = f"mongodb://{ADMIN_USER_URI}:{ADMIN_PASS_URI}@{MONGO_HOST}:{MONGO_PORT}/?authSource=admin"
+            client = MongoClient(uri_admin)
             client.admin.command('ping')
             print("✅ Connexion réussie à MongoDB !")
             break
@@ -25,22 +45,19 @@ def lancer_migration():
 
     try:
         # Accès à la base de données et à la collection
-        db = client['healthcare_db']
+        db = client[DB_NAME]
         collection = db['patients']
         
         # --- CRÉATION DE L'UTILISATEUR APPLICATIF SÉCURISÉ ---
-        app_user = "app_user"
-        app_password = "UserSecurePass123!"
-        
         existing_users = db.command("usersInfo")["users"]
-        if not any(u["user"] == app_user for u in existing_users):
-            print(f"🔑 Création de l'utilisateur applicatif '{app_user}'...")
-            db.command("createUser", app_user, 
-                       pwd=app_password, 
-                       roles=[{"role": "readWrite", "db": "healthcare_db"}])
+        if not any(u["user"] == APP_USER for u in existing_users):
+            print(f"🔑 Création de l'utilisateur applicatif '{APP_USER}' sur la base ...")
+            db.command("createUser", APP_USER, 
+                       pwd=APP_PASS, 
+                       roles=[{"role": "readWrite", "db": DB_NAME}])
             print("🔑 Utilisateur créé avec succès.")
         else:
-            print("🔑 L'utilisateur applicatif existe déjà.")
+            print(f"🔑 L'utilisateur applicatif '{APP_USER}' existe déjà.")
             
         # --- LECTURE ET INSERTS ---
         df = pd.read_csv('healthcare_dataset.csv', parse_dates=['Date of Admission', 'Discharge Date'])
