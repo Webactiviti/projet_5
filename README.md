@@ -29,6 +29,23 @@ git clone [https://github.com/webactiviti/projet_5.git](https://github.com/Webac
 cd projet_5
 ```
 
+## ⚙️ Configuration des variables d'environnement (`.env`)
+
+Pour des raisons de sécurité, les identifiants de connexion et mots de passe ne sont pas inclus en dur dans le code source ni versionnés sur GitHub. 
+
+Après avoir cloné le projet, vous devez **créer un fichier `.env` à la racine du projet**.
+
+###  Création du fichier `.env`
+
+Exécutez la commande suivante dans votre terminal à la racine du projet :
+
+```bash
+cp .env.example .env
+```
+##  Modifier le fichier `.env`
+**mettre à jour les paramètres du fichier `.env` pour votre projet**.
+
+
 ### 2. Démarrer l'ensemble des services (MongoDB + Migration)
 Exécute la commande suivante à la racine du projet :
 
@@ -41,7 +58,7 @@ sudo docker compose up --build
 2. Le script de migration Python s'exécute dans un conteneur dédié :
    - Il attend que MongoDB soit prêt.
    - Il crée l'utilisateur applicatif restreint `app_user`.
-   - Il nettoie et insère les 10 000 dossiers de patients.
+   - Il nettoie et insère les 55 500 dossiers de patients.
    - Il termine son exécution proprement.
 
 ---
@@ -51,7 +68,7 @@ sudo docker compose up --build
 Pour vérifier que les données sont bien présentes et que l'utilisateur applicatif restreint fonctionne, tu peux lancer le script de test local :
 
 ```bash
-uv run python test_auth.py
+sudo docker compose run --rm migration python test_auth.py
 ```
 
 Ce script vérifie :
@@ -68,6 +85,7 @@ projet_5/
 ├── Dockerfile               # Configuration du conteneur Python de migration
 ├── migrate.py               # Script d'infrastucture et d'ingestion de données
 ├── test_auth.py             # Script de vérification des droits applicatifs
+├── test_indexes.py          # Script de benchmark suivant les type d'index'
 ├── healthcare_dataset.csv   # Données brutes
 ├── pyproject.toml           # Gestion des dépendances Python (uv)
 └── README.md                # Documentation du projet
