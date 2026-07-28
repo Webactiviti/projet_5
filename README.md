@@ -82,11 +82,14 @@ Ce script vérifie :
 sudo docker compose run --rm migration python test_indexes.py 
 ```
 
-🚀 Début du benchmark et du test d'indexation...
+🚀 Début du benchmark et du test d'indexation... 
+
 🧹 Tous les index secondaires ont été supprimés pour le test AVANT.
+
 📊 Nombre de documents dans la collection : 55500
 
 --- 1. Index Simple (AVANT) ---
+
 ⏱️ Temps d'exécution      : 27 ms
 📄 Documents examinés    : 55500
 ✅ Documents retournés    : 9227
