@@ -105,7 +105,7 @@ sudo docker compose run --rm migration python test_indexes.py
 - ✅ Documents retournés    : 0
 - 🔍 Type de scan utilisé   : FETCH
 
-  Index Composé (APRÈS) ?**
+  **Index Composé (APRÈS) ?**
 - ⏱️ Temps d'exécution      : 0 ms
 - 📄 Documents examinés    : 0
 - ✅ Documents retournés    : 0
