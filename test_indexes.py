@@ -103,6 +103,8 @@ def tester_indexes():
         exp_comp_after = get_explain_stats(db, 'patients', query_compound)
         print_benchmark("2. Index Composé (APRÈS)", exp_comp_after)
 
+
+
         # ==========================================
         # 3. TEST INDEX UNIQUE : Name (ou champ unique existant)
         # ==========================================
@@ -118,6 +120,7 @@ def tester_indexes():
         # APRÈS Index
         exp_uniq_after = get_explain_stats(db, 'patients', query_unique)
         print_benchmark("3. Index recherche de nom (APRÈS)", exp_uniq_after)
+
 
     except OperationFailure as e:
         print(f"❌ Erreur de droits/opération MongoDB : {e}")
